@@ -4,6 +4,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import ThemeToggle from "@/components/layout/ThemeToggle";
 import {
   Moon,
   Sun,
@@ -85,10 +86,7 @@ export default function Navbar() {
         {/* Right: theme button + auth buttons */}
         <div className="flex items-center gap-2 justify-self-end">
 
-          <Button variant="ghost" size="icon" aria-label="Toggle theme">
-            <Sun className="h-5 w-5 dark:hidden" />
-            <Moon className="hidden h-5 w-5 dark:block" />
-          </Button>
+          <ThemeToggle />
 
           {user ? (
             <Popover>
