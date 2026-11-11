@@ -6,8 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ThemeToggle from "@/components/layout/ThemeToggle";
 import {
-  Moon,
-  Sun,
   UserRound,
   CalendarPlus,
   CalendarCog,

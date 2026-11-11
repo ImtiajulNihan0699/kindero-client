@@ -82,12 +82,21 @@ export default function LoginForm() {
     }
   };
 
-    const handleGoogleSignIn = async () => {
+  const handleGoogleSignIn = async () => {
+  try {
     await authClient.signIn.social({
       provider: "google",
       callbackURL: "/",
     });
-  };
+  } catch (error) {
+    console.error("Google sign-in failed:", error);
+
+    toast.add({
+      title: "Google Sign-In Failed",
+      description: "Something went wrong. Please try again.",
+    });
+  }
+};
 
   return (
     <div className={"flex flex-col gap-6 w-full max-w-md mx-auto my-10"}>
