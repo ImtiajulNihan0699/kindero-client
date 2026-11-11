@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/toast"
+import Footer from "@/components/layout/Footer";
 
 const josefinSans = Josefin_Sans({
   subsets: ["latin"],
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Navbar />
           <main className="flex-1">{children}</main>
           <Toaster />
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
