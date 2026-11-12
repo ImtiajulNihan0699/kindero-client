@@ -2,7 +2,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { CalendarDays, Clock, MapPin, Users, ImagePlus } from "lucide-react";
+import { CalendarDays, MapPin, ImagePlus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -42,15 +42,24 @@ export default function CreateEventPage() {
     () => ""
   );
 
-  const handleSubmit= async(e:React.FormEvent<HTMLFormElement>) =>{
-    e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-     const formData = new FormData(e.currentTarget);
-    const createEventData = Object.fromEntries(formData.entries());
+  const formData = new FormData(e.currentTarget);
+  const createEventData = Object.fromEntries(formData.entries());
 
-    console.log("Event Data:", createEventData);
-    
-  }
+  console.log("Event Data:", createEventData);
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(createEventData),
+  });
+
+   await res.json();
+};
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-10 md:px-6">
@@ -130,45 +139,6 @@ export default function CreateEventPage() {
                   />
                 </Field>
 
-                <Field>
-                  <FieldLabel htmlFor="participants">
-                    <Users className="size-4" />
-                    Maximum Participants
-                  </FieldLabel>
-                  <Input
-                    id="participants"
-                    name="participants"
-                    type="number"
-                    min="1"
-                    placeholder="e.g. 30"
-                  />
-                </Field>
-              </div>
-
-              <div className="grid gap-5 sm:grid-cols-2">
-                <Field>
-                  <FieldLabel htmlFor="startTime">
-                    <Clock className="size-4" />
-                    Start Time
-                  </FieldLabel>
-                  <Input
-                    id="startTime"
-                    name="startTime"
-                    type="time"
-                  />
-                </Field>
-
-                <Field>
-                  <FieldLabel htmlFor="endTime">
-                    <Clock className="size-4" />
-                    End Time
-                  </FieldLabel>
-                  <Input
-                    id="endTime"
-                    name="endTime"
-                    type="time"
-                  />
-                </Field>
               </div>
 
               <Field>
