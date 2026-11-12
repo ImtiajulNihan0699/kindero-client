@@ -74,7 +74,7 @@ export default function Navbar() {
         {/* Middle: Upcoming Events (hidden on mobile for now) */}
         <nav className="hidden justify-self-center md:block">
           <Link
-            href="/events"
+            href="/events/upcoming-events"
             className="text-sm font-medium text-foreground/80 transition-colors hover:text-primary"
           >
             Upcoming Events

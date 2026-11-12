@@ -35,8 +35,8 @@ export default function Hero() {
           </p>
 
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row md:items-start">
-            <Link href="/events" className={buttonVariants({ size: "lg" })}>
-              Explore Upcoming Events
+            <Link href="events/explore-events"className={buttonVariants({ size: "lg" })}>
+              Explore Events
             </Link>
             <Link
               href="events/create-events"
