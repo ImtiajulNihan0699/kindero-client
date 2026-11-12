@@ -39,7 +39,7 @@ export default function Hero() {
               Explore Upcoming Events
             </Link>
             <Link
-              href="/create-event"
+              href="events/create-events"
               className={buttonVariants({
                 variant: "outline",
                 size: "lg",
