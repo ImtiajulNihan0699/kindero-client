@@ -27,7 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
+import { useRouter } from "next/navigation";
 const subscribe = () => () => {};
 
 const getTodayDate = () =>
@@ -36,6 +36,7 @@ const getTodayDate = () =>
   });
 
 export default function CreateEventPage() {
+  const router = useRouter();
   const minDate = useSyncExternalStore(subscribe, getTodayDate, () => "");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -61,12 +62,12 @@ export default function CreateEventPage() {
         throw new Error(data.message || "Failed to create event");
       }
 
+      router.push("/events/manage-events");
+
       toast.add({
         title: "Event created successfully!",
         description: "Your community event has been created.",
       });
-
-      console.log("Response Data:", data);
     } catch (error) {
       toast.add({
         title: "Something went wrong",

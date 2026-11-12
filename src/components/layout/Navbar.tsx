@@ -134,7 +134,7 @@ export default function Navbar() {
 
                 {/* Create Events */}
                 <Link
-                  href="events/create-events"
+                  href="/events/create-events"
                   className="flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-green-50 dark:hover:bg-green-950"
                 >
                   <span className="rounded-md bg-green-100 p-2 text-green-600 dark:bg-green-900 dark:text-green-300">

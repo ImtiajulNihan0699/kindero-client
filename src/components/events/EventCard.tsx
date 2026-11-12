@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { CalendarDays, MapPin } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -73,11 +72,14 @@ export default function EventCard({ event }: EventCardProps) {
         </div>
       </CardContent>
 
-      <CardFooter>
-        <Button className="w-full" variant="outline">
-          View Details
-        </Button>
-      </CardFooter>
+     <CardFooter>
+  <Link
+    href={`/events/${event._id}`}
+    className="flex w-full items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+  >
+    View Details
+  </Link>
+</CardFooter>
     </Card>
   );
 }
