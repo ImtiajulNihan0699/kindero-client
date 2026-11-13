@@ -1,5 +1,6 @@
+
 import Image from "next/image";
-import { CalendarDays, MapPin } from "lucide-react";
+import { CalendarDays, MapPin, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import {
   Card,
@@ -9,14 +10,25 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 import type { Event } from "@/types/event";
 
 interface EventCardProps {
   event: Event;
+  showEdit?: boolean;
+  showDelete?: boolean;
+  onEdit?: (event: Event) => void;
+  onDelete?: (eventId: string) => void;
 }
 
-export default function EventCard({ event }: EventCardProps) {
+export default function EventCard({
+  event,
+  showEdit = false,
+  showDelete = false,
+  onEdit,
+  onDelete,
+}: EventCardProps) {
   return (
     <Card className="overflow-hidden border-border/70 shadow-sm transition-shadow hover:shadow-md">
       <div className="relative h-48 w-full bg-muted">
@@ -72,14 +84,42 @@ export default function EventCard({ event }: EventCardProps) {
         </div>
       </CardContent>
 
-     <CardFooter>
-  <Link
-    href={`/events/${event._id}`}
-    className="flex w-full items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
-  >
-    View Details
-  </Link>
-</CardFooter>
+      <CardFooter className="flex flex-col gap-2">
+        <Link
+          href={`/events/${event._id}`}
+          className="flex w-full items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+        >
+          View Details
+        </Link>
+
+        {(showEdit || showDelete) && (
+          <div className="flex w-full gap-2">
+            {showEdit && (
+              <Button
+                type="button"
+                variant="outline"
+                className="flex-1"
+                onClick={() => onEdit?.(event)}
+              >
+                <Pencil className="size-4" />
+                Edit
+              </Button>
+            )}
+
+            {showDelete && (
+              <Button
+                type="button"
+                variant="destructive"
+                className="flex-1"
+                onClick={() => onDelete?.(event._id)}
+              >
+                <Trash2 className="size-4" />
+                Delete
+              </Button>
+            )}
+          </div>
+        )}
+      </CardFooter>
     </Card>
   );
 }

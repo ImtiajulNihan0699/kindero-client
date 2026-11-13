@@ -145,7 +145,7 @@ export default function Navbar() {
 
                 {/* Manage Events */}
                 <Link
-                  href="/manage-events"
+                  href="/events/manage-events"
                   className="flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-purple-50 dark:hover:bg-purple-950"
                 >
                   <span className="rounded-md bg-purple-100 p-2 text-purple-600 dark:bg-purple-900 dark:text-purple-300">

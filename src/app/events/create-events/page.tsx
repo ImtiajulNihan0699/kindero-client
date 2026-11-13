@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { CalendarDays, MapPin, ImagePlus } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -37,13 +38,18 @@ const getTodayDate = () =>
 
 export default function CreateEventPage() {
   const router = useRouter();
+  const { data: session } = authClient.useSession();
   const minDate = useSyncExternalStore(subscribe, getTodayDate, () => "");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const createEventData = Object.fromEntries(formData.entries());
+
+    const createEventData = {
+      ...Object.fromEntries(formData.entries()),
+      createdBy: session?.user.id,
+    };
 
     console.log("Event Data:", createEventData);
 
