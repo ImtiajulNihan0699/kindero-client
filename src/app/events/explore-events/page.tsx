@@ -1,7 +1,9 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
 import EventCard from "@/components/events/EventCard";
+import EventCardSkeleton from "@/components/events/EventCardSkeleton";
 import type { Event } from "@/types/event";
 
 export default function ExploreEventsPage() {
@@ -19,8 +21,7 @@ export default function ExploreEventsPage() {
           throw new Error("Failed to fetch events");
         }
 
-      const data: Event[] = await res.json();
-
+        const data: Event[] = await res.json();
 
         setEvents(data);
       } catch (error) {
@@ -35,8 +36,22 @@ export default function ExploreEventsPage() {
 
   if (loading) {
     return (
-      <div className="py-20 text-center text-muted-foreground">
-        Loading events...
+      <div className="mx-auto max-w-7xl px-4 py-12 md:px-6">
+        <div className="mb-10">
+          <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+            Explore Events
+          </h1>
+
+          <p className="mt-3 text-muted-foreground">
+            Discover community events and find opportunities to make a difference.
+          </p>
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <EventCardSkeleton key={index} />
+          ))}
+        </div>
       </div>
     );
   }

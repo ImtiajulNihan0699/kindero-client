@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -7,6 +6,7 @@ import { Event } from "@/types/event";
 import EventCard from "@/components/events/EventCard";
 import EditEventDialog from "@/components/events/EditEventDialog";
 import DeleteEventDialog from "@/components/events/DeleteEventDialog";
+import EventCardSkeleton from "@/components/events/EventCardSkeleton";
 
 export default function ManageEventsPage() {
   const { data: session } = authClient.useSession();
@@ -54,9 +54,11 @@ export default function ManageEventsPage() {
       </div>
 
       {loading ? (
-        <p className="text-center text-muted-foreground">
-          Loading your events...
-        </p>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <EventCardSkeleton key={index} />
+          ))}
+        </div>
       ) : events.length === 0 ? (
         <p className="text-center text-muted-foreground">
           You haven&apos;t created any events yet.

@@ -1,11 +1,10 @@
-
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CalendarDays, MapPin, Eye, Trash2 } from "lucide-react";
-
+import EventCardSkeleton from "@/components/events/EventCardSkeleton";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
@@ -72,9 +71,7 @@ export default function JoinedEventsPage() {
         throw new Error(data.message || "Failed to remove event");
       }
 
-      setEvents((prevEvents) =>
-        prevEvents.filter((event) => event._id !== id),
-      );
+      setEvents((prevEvents) => prevEvents.filter((event) => event._id !== id));
 
       toast.add({
         title: "Event Removed",
@@ -105,14 +102,14 @@ export default function JoinedEventsPage() {
       </div>
 
       {loading ? (
-        <p className="py-12 text-center text-muted-foreground">
-          Loading your joined events...
-        </p>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <EventCardSkeleton key={index} />
+          ))}
+        </div>
       ) : events.length === 0 ? (
         <div className="rounded-xl border bg-card px-6 py-16 text-center">
-          <h2 className="text-xl font-semibold">
-            No Joined Events Yet
-          </h2>
+          <h2 className="text-xl font-semibold">No Joined Events Yet</h2>
 
           <p className="mt-2 text-muted-foreground">
             Explore upcoming events and join something interesting!
@@ -143,9 +140,7 @@ export default function JoinedEventsPage() {
 
               <div className="min-w-0 flex-1 space-y-2">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="text-lg font-semibold">
-                    {event.title}
-                  </h2>
+                  <h2 className="text-lg font-semibold">{event.title}</h2>
 
                   <span className="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium capitalize text-primary">
                     {event.category}
@@ -159,14 +154,15 @@ export default function JoinedEventsPage() {
                 <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <CalendarDays className="size-4 text-primary" />
-                    {new Date(
-                      `${event.eventDate}T00:00:00`,
-                    ).toLocaleDateString("en-BD", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                      timeZone: "Asia/Dhaka",
-                    })}
+                    {new Date(`${event.eventDate}T00:00:00`).toLocaleDateString(
+                      "en-BD",
+                      {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                        timeZone: "Asia/Dhaka",
+                      },
+                    )}
                   </div>
 
                   <div className="flex items-center gap-2">
@@ -177,10 +173,7 @@ export default function JoinedEventsPage() {
               </div>
 
               <div className="flex shrink-0 flex-col gap-2 sm:w-36">
-                <Link
-                  href={`/events/${event.eventId}`}
-                  className="w-full"
-                >
+                <Link href={`/events/${event.eventId}`} className="w-full">
                   <Button className="w-full">
                     <Eye className="size-4" />
                     View Details
