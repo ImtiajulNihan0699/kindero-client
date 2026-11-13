@@ -87,7 +87,7 @@ export default async function EventDetailsPage({
       </div>
 
       <div className="mt-8">
-        <JoinEvent />
+        <JoinEvent event={event} />
       </div>
     </div>
   );

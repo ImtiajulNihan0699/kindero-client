@@ -156,7 +156,7 @@ export default function Navbar() {
 
                 {/* Joined Events */}
                 <Link
-                  href="/joined-events"
+                  href="/events/joined-events"
                   className="flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-orange-50 dark:hover:bg-orange-950"
                 >
                   <span className="rounded-md bg-orange-100 p-2 text-orange-600 dark:bg-orange-900 dark:text-orange-300">
