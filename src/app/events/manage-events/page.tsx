@@ -1,12 +1,15 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { Event } from "@/types/event";
 import EventCard from "@/components/events/EventCard";
+import EditEventDialog from "@/components/events/EditEventDialog";
 
 export default function ManageEventsPage() {
   const { data: session } = authClient.useSession();
+
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [deleteEventId, setDeleteEventId] = useState<string | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
@@ -71,6 +74,23 @@ export default function ManageEventsPage() {
           ))}
         </div>
       )}
+
+      <EditEventDialog
+        key={selectedEvent?._id}
+        event={selectedEvent}
+        open={!!selectedEvent}
+        onOpenChange={(open) => {
+          if (!open) setSelectedEvent(null);
+        }}
+        onUpdated={(updatedEvent) => {
+          setEvents((prevEvents) =>
+            prevEvents.map((event) =>
+              event._id === updatedEvent._id ? updatedEvent : event,
+            ),
+          );
+          setSelectedEvent(null);
+        }}
+      />
     </section>
   );
 }
