@@ -6,6 +6,7 @@ import { authClient } from "@/lib/auth-client";
 import { Event } from "@/types/event";
 import EventCard from "@/components/events/EventCard";
 import EditEventDialog from "@/components/events/EditEventDialog";
+import DeleteEventDialog from "@/components/events/DeleteEventDialog";
 
 export default function ManageEventsPage() {
   const { data: session } = authClient.useSession();
@@ -89,6 +90,20 @@ export default function ManageEventsPage() {
             ),
           );
           setSelectedEvent(null);
+        }}
+      />
+
+      <DeleteEventDialog
+        event={events.find((event) => event._id === deleteEventId) || null}
+        open={!!deleteEventId}
+        onOpenChange={(open) => {
+          if (!open) setDeleteEventId(null);
+        }}
+        onDeleted={(eventId) => {
+          setEvents((prevEvents) =>
+            prevEvents.filter((event) => event._id !== eventId),
+          );
+          setDeleteEventId(null);
         }}
       />
     </section>

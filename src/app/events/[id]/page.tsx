@@ -1,8 +1,7 @@
-
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { CalendarDays, MapPin } from "lucide-react";
-
+import EventDetailsActions from "@/components/events/EventDetailsActions";
 import type { Event } from "@/types/event";
 import JoinEvent from "@/components/events/JoinEvent";
 
@@ -17,12 +16,9 @@ export default async function EventDetailsPage({
 }: EventDetailsPageProps) {
   const { id } = await params;
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/events/${id}`,
-    {
-      cache: "no-store",
-    }
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${id}`, {
+    cache: "no-store",
+  });
 
   if (!res.ok) {
     notFound();
@@ -46,9 +42,15 @@ export default async function EventDetailsPage({
         )}
 
         <div className="space-y-6 p-6 md:p-10">
-          <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-medium capitalize text-primary">
-            {event.category}
-          </span>
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-medium capitalize text-primary">
+              {event.category}
+            </span>
+
+            <div className="ml-auto w-full max-w-xs">
+              <EventDetailsActions event={event} />
+            </div>
+          </div>
 
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
             {event.title}
@@ -64,7 +66,7 @@ export default async function EventDetailsPage({
                   month: "long",
                   year: "numeric",
                   timeZone: "Asia/Dhaka",
-                }
+                },
               )}
             </div>
 
@@ -75,9 +77,7 @@ export default async function EventDetailsPage({
           </div>
 
           <div className="border-t pt-6">
-            <h2 className="mb-3 text-xl font-semibold">
-              About This Event
-            </h2>
+            <h2 className="mb-3 text-xl font-semibold">About This Event</h2>
 
             <p className="whitespace-pre-line text-base leading-8 text-muted-foreground">
               {event.description}

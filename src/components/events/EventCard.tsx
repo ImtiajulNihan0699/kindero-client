@@ -1,6 +1,7 @@
 
 import Image from "next/image";
-import { CalendarDays, MapPin, Pencil, Trash2 } from "lucide-react";
+import { CalendarDays, MapPin} from "lucide-react";
+import EventActions from "@/components/events/EventActions";
 import Link from "next/link";
 import {
   Card,
@@ -10,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 import type { Event } from "@/types/event";
 
@@ -92,33 +92,12 @@ export default function EventCard({
           View Details
         </Link>
 
-        {(showEdit || showDelete) && (
-          <div className="flex w-full gap-2">
-            {showEdit && (
-              <Button
-                type="button"
-                variant="outline"
-                className="flex-1"
-                onClick={() => onEdit?.(event)}
-              >
-                <Pencil className="size-4" />
-                Edit
-              </Button>
-            )}
-
-            {showDelete && (
-              <Button
-                type="button"
-                variant="destructive"
-                className="flex-1"
-                onClick={() => onDelete?.(event._id)}
-              >
-                <Trash2 className="size-4" />
-                Delete
-              </Button>
-            )}
-          </div>
-        )}
+       {(showEdit || showDelete) && (
+  <EventActions
+    onEdit={() => onEdit?.(event)}
+    onDelete={() => onDelete?.(event._id)}
+  />
+)}
       </CardFooter>
     </Card>
   );
