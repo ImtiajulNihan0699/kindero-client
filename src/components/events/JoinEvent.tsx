@@ -2,13 +2,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "@/components/ui/toast";
 import type { Event } from "@/types/event";
 import { useRouter } from "next/navigation";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
+
+const API = process.env.NEXT_PUBLIC_API_URL;
 
 interface JoinEventProps {
   event: Event;
@@ -36,8 +38,15 @@ export default function JoinEvent({ event }: JoinEventProps) {
       }
 
       try {
+        const token = await getTokenFromClient();
+
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/joined-events/${session.user.id}`,
+          `${API}/joined-events/${session.user.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
         );
 
         const data = await res.json();
@@ -74,19 +83,19 @@ export default function JoinEvent({ event }: JoinEventProps) {
     setJoining(true);
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/joined-events`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: session.user.id,
-            eventId: event._id,
-          }),
+      const token = await getTokenFromClient();
+
+      const res = await fetch(`${API}/joined-events`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+        body: JSON.stringify({
+          userId: session.user.id,
+          eventId: event._id,
+        }),
+      });
 
       const data = await res.json();
 
@@ -98,15 +107,19 @@ export default function JoinEvent({ event }: JoinEventProps) {
 
       toast.add({
         title: "Successfully Joined!",
-        description: "You have joined this event.",
+        description: "You have successfully joined this event.",
       });
+
       router.push("/events/joined-events");
     } catch (error) {
       console.error("Error joining event:", error);
 
       toast.add({
-        title: "Unable to Join",
-        description: "Something went wrong while joining this event.",
+        title: "Something went wrong",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Failed to join this event. Please try again.",
       });
     } finally {
       setJoining(false);
@@ -114,32 +127,29 @@ export default function JoinEvent({ event }: JoinEventProps) {
   };
 
   return (
-    <Card className="border-primary/20 bg-primary/5 shadow-sm">
-      <CardContent className="flex flex-col items-center gap-4 px-6 py-8 text-center">
-        <h2 className="text-2xl font-bold tracking-tight">
+    <Card className="mt-8">
+      <CardContent className="flex flex-col items-center gap-4 p-6 text-center">
+        <h2 className="text-xl font-semibold">
           Want to Be Part of This Event?
         </h2>
 
-        <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
-          Your participation can make a difference! Connect with your
-          community, meet like-minded people, and contribute to something
-          meaningful. Join us and be part of the positive change.
+        <p className="text-muted-foreground">
+          Join this event and be part of something meaningful. We&apos;d love
+          to have you participate!
         </p>
 
         <Button
-          size="lg"
-          className="min-w-44"
-          disabled={loading || joining || joined || eventEnded}
           onClick={handleJoinEvent}
+          disabled={loading || joining || joined || eventEnded}
         >
           {loading
             ? "Checking..."
-            : eventEnded
-              ? "Event Ended"
+            : joining
+              ? "Joining..."
               : joined
                 ? "Already Joined"
-                : joining
-                  ? "Joining..."
+                : eventEnded
+                  ? "Event Has Ended"
                   : "Join This Event"}
         </Button>
       </CardContent>

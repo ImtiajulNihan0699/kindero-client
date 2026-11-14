@@ -4,6 +4,7 @@ import { CalendarDays, MapPin } from "lucide-react";
 import EventDetailsActions from "@/components/events/EventDetailsActions";
 import type { Event } from "@/types/event";
 import JoinEvent from "@/components/events/JoinEvent";
+import { getTokenFromServer } from "@/lib/getTokenFromServer";
 
 interface EventDetailsPageProps {
   params: Promise<{
@@ -15,9 +16,14 @@ export default async function EventDetailsPage({
   params,
 }: EventDetailsPageProps) {
   const { id } = await params;
+  
+ const token = await getTokenFromServer()
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${id}`, {
     cache: "no-store",
+    headers:{
+      authorization: `Bearer ${token}`
+    }
   });
 
   if (!res.ok) {

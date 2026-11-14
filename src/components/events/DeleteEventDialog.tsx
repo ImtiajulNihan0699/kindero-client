@@ -16,6 +16,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 interface DeleteEventDialogProps {
   event: Event | null;
@@ -36,12 +37,16 @@ export default function DeleteEventDialog({
     if (!event) return;
 
     setLoading(true);
+    const token= await getTokenFromClient()
 
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/events/${event._id}`,
         {
           method: "DELETE",
+          headers: {
+            authorization:`Bearer ${token}`
+          }
         },
       );
 

@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 interface EditEventDialogProps {
   event: Event | null;
@@ -65,6 +66,8 @@ export default function EditEventDialog({
 
     setLoading(true);
 
+    const token= await getTokenFromClient()
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/events/${event._id}`,
@@ -72,6 +75,7 @@ export default function EditEventDialog({
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            authorization: `Bearer ${token}`
           },
           body: JSON.stringify(eventData),
         },

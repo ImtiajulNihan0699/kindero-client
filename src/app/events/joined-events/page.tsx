@@ -1,5 +1,5 @@
-"use client";
 
+"use client"
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import { authClient } from "@/lib/auth-client";
 import { toast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 import type { Event } from "@/types/event";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
 
 interface JoinedEvent extends Omit<Event, "_id"> {
   _id: string;
@@ -31,10 +32,15 @@ export default function JoinedEventsPage() {
       }
 
       setLoading(true);
-
+      const token= await getTokenFromClient()
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/joined-events/${session.user.id}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/joined-events/${session.user.id}`,{
+            headers: {
+              authorization:`Bearer ${token}`
+            }
+          }
+
         );
 
         const data = await res.json();

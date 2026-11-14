@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useSyncExternalStore } from "react";
@@ -29,6 +30,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
+import { getTokenFromClient } from "@/lib/getTokenFromClient";
+
 const subscribe = () => () => {};
 
 const getTodayDate = () =>
@@ -44,7 +47,12 @@ export default function CreateEventPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Capture form data before the first await
     const formData = new FormData(e.currentTarget);
+
+    // Get JWT token
+     const token = await getTokenFromClient()
+  
 
     const createEventData = {
       ...Object.fromEntries(formData.entries()),
@@ -58,14 +66,15 @@ export default function CreateEventPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+           authorization: `Bearer ${token}`
         },
         body: JSON.stringify(createEventData),
       });
 
-      const data = await res.json();
+      const responseData = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || "Failed to create event");
+        throw new Error(responseData.message || "Failed to create event");
       }
 
       router.push("/events/manage-events");
@@ -116,7 +125,9 @@ export default function CreateEventPage() {
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="description">Event Description</FieldLabel>
+                <FieldLabel htmlFor="description">
+                  Event Description
+                </FieldLabel>
                 <Textarea
                   id="description"
                   name="description"
