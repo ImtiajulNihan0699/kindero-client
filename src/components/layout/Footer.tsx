@@ -65,7 +65,7 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                href="/events"
+                href="/events/upcoming-events"
                 className="transition-colors hover:text-white"
               >
                 Upcoming Events
@@ -73,7 +73,7 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                href="/create-event"
+                href="/events/create-events"
                 className="transition-colors hover:text-white"
               >
                 Create Event
@@ -81,7 +81,7 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                href="/joined-events"
+                href="/events/joined-events"
                 className="transition-colors hover:text-white"
               >
                 Joined Events
